@@ -1,0 +1,47 @@
+name: Generate Xcode Project
+
+on:
+  push:
+    paths:
+      - 'project.yml'
+      - '.github/workflows/xcodegen.yml'
+  pull_request:
+    paths:
+      - 'project.yml'
+      - '.github/workflows/xcodegen.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-xcodeproj:
+    name: Generate Xcode Project
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+        
+      - name: Install XcodeGen
+        run: brew install xcodegen
+        
+      - name: Generate Xcode Project
+        run: |
+          xcodegen
+          
+      - name: Upload Generated Project
+        uses: actions/upload-artifact@v4
+        with:
+          name: HarfChallengeKeyboard.xcodeproj
+          path: HarfChallengeKeyboard.xcodeproj
+          
+      - name: Commit Generated Project
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add HarfChallengeKeyboard.xcodeproj
+          git commit -m "Auto-generated .xcodeproj from project.yml" || echo "No changes to commit"
+          git push 

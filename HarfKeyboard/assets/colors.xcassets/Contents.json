@@ -1,0 +1,73 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "colors" : [
+    {
+      "idiom" : "universal",
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "red" : "0.262",
+          "green" : "0.635",
+          "blue" : "0.278",
+          "alpha" : "1.0"
+        }
+      },
+      "name" : "GreenTeam"
+    },
+    {
+      "idiom" : "universal",
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "red" : "0.898",
+          "green" : "0.298",
+          "blue" : "0.208",
+          "alpha" : "1.0"
+        }
+      },
+      "name" : "RedTeam"
+    },
+    {
+      "idiom" : "universal",
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "red" : "0.965",
+          "green" : "0.965",
+          "blue" : "0.965",
+          "alpha" : "1.0"
+        }
+      },
+      "name" : "KeyboardBG"
+    },
+    {
+      "idiom" : "universal",
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "red" : "0.118",
+          "green" : "0.565",
+          "blue" : "1.0",
+          "alpha" : "1.0"
+        }
+      },
+      "name" : "MainBlue"
+    },
+    {
+      "idiom" : "universal",
+      "color" : {
+        "color-space" : "srgb",
+        "components" : {
+          "red" : "0.133",
+          "green" : "0.133",
+          "blue" : "0.133",
+          "alpha" : "1.0"
+        }
+      },
+      "name" : "MainText"
+    }
+  ]
+} 

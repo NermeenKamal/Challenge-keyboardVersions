@@ -1,0 +1,70 @@
+workflows:
+  ios-workflow:
+    name: iOS Workflow
+    environment:
+      xcode: latest
+      cocoapods: default
+      vars:
+        XCODE_PROJECT: "HarfChallengeKeyboard.xcodeproj"
+        XCODE_SCHEME: "HarfChallengeKeyboardApp"
+    scripts:
+      - name: Clean build directory
+        script: |
+          rm -rf $CM_BUILD_DIR/build
+      - name: Install XcodeGen
+        script: |
+          brew install xcodegen
+      - name: Generate Xcode project
+        script: |
+          xcodegen generate
+      - name: "Debug: List Xcode project"
+        script: |
+          ls -la
+          ls -la HarfChallengeKeyboardKeyboard.xcodeproj || echo "No Xcode project found"
+      - name: "Debug: List Swift files"
+        script: |
+          find HarfChallengeKeyboardApp -name "*.swift" -print
+          cat HarfChallengeKeyboardApp/HarfChallengeKeyboardApp.swift || echo "No main swift file found"
+      - name: List available schemes
+        script: |
+          xcodebuild -project $XCODE_PROJECT -list
+      - name: List available simulators
+        script: |
+          echo "📱 Available simulators:"
+          xcrun simctl list devices available | grep "iPhone"
+      - name: Build iOS app (Simulator) - iPhone 16 Pro Max Debug
+        script: |
+          set -e
+          echo "🏗️ Building app for iPhone 16 Pro Max (Debug)..."
+          xcodebuild build -project $XCODE_PROJECT \
+                     -scheme $XCODE_SCHEME \
+                     -configuration Debug \
+                     -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' \
+                     -derivedDataPath $CM_BUILD_DIR/build/ios/xcode \
+                     CODE_SIGNING_ALLOWED=NO \
+                     ONLY_ACTIVE_ARCH=YES \
+                     -allowProvisioningUpdates \
+                     -verbose | tee build16promax_debug.log
+      - name: "Debug: List build products"
+        script: |
+          ls -la $CM_BUILD_DIR/build/ios/xcode/Build/Products/Debug-iphonesimulator/
+      - name: "Zip .app for Simulator"
+        script: |
+          cd $CM_BUILD_DIR/build/ios/xcode/Build/Products/Debug-iphonesimulator/
+          zip -r HarfChallengeKeyboardApp.app.zip HarfChallengeKeyboardApp.app
+      - name: "Debug: Show artifact path"
+        script: |
+          ls -lh $CM_BUILD_DIR/build/ios/xcode/Build/Products/Debug-iphonesimulator/
+          pwd
+      - name: "Debug: Check .zip exists"
+        script: |
+          ls -lh $CM_BUILD_DIR/build/ios/xcode/Build/Products/Debug-iphonesimulator/
+    publishing:
+      email:
+        recipients:
+          - nermeen@example.com
+        notify:
+          success: true
+          failure: true
+artifacts:
+  - $CM_BUILD_DIR/build/ios/xcode/Build/Products/Debug-iphonesimulator/HarfChallengeKeyboardApp.app.zip 
