@@ -799,59 +799,19 @@ class GameProvider extends ChangeNotifier {
     if (tempList.length != tempSet.length) {
       return generateRandomHexKeyboard();
     }
-    // شبكة كاملة 5x8، كل صف 8 عناصر (حتى الزوايا)
-    // تأكد أن كل صف يحتوي على 8 عناصر بالضبط (حتى الصفوف الأولى والأخيرة)
+    // شبكة 5x5 سداسية متصلة، الحواف null
+    // مثال:
+    // [ null,   X,   X,   X, null ]
+    // [   X,   X,   X,   X,   X  ]
+    // [   X,   X,   X,   X,   X  ]
+    // [   X,   X,   X,   X,   X  ]
+    // [ null,   X,   X,   X, null ]
     return [
-      [
-        null,
-        null,
-        letters[0],
-        letters[1],
-        letters[2],
-        letters[3],
-        null,
-        null
-      ], // 8 عناصر
-      [
-        null,
-        letters[4],
-        letters[5],
-        letters[6],
-        letters[7],
-        letters[8],
-        letters[9],
-        null
-      ], // 8 عناصر
-      [
-        letters[10],
-        letters[11],
-        letters[12],
-        letters[13],
-        letters[14],
-        letters[15],
-        letters[16],
-        letters[17]
-      ], // 8 عناصر
-      [
-        null,
-        letters[18],
-        letters[19],
-        letters[20],
-        letters[21],
-        letters[22],
-        letters[23],
-        null
-      ], // 8 عناصر
-      [
-        null,
-        null,
-        letters[24],
-        letters[25],
-        letters[26],
-        letters[27],
-        null,
-        null
-      ], // 8 عناصر
+      [null, letters[0], letters[1], letters[2], null],
+      [letters[3], letters[4], letters[5], letters[6], letters[7]],
+      [letters[8], letters[9], letters[10], letters[11], letters[12]],
+      [letters[13], letters[14], letters[15], letters[16], letters[17]],
+      [null, letters[18], letters[19], letters[20], null],
     ];
   }
 

@@ -109,12 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _lastPressedKey;
   Map<String, String> _keyTeamColors = {};
 
-  // ثابت الجيران السداسي (6 اتجاهات)
+  // ثابت الجيران السداسي (6 اتجاهات) - محدث للتخطيط الجديد
   static const List<List<List<int>>> hexNeighbors = [
     // حتى الصفوف الزوجية والفردية
     // [dy, dx] لكل اتجاه
     // 0: أعلى يسار، 1: أعلى يمين، 2: يمين، 3: أسفل يمين، 4: أسفل يسار، 5: يسار
-    // الصف الزوجي
+    // الصف الزوجي (0, 2, 4, 6)
     [
       [-1, -1], // أعلى يسار
       [-1, 0], // أعلى يمين
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
       [1, -1], // أسفل يسار
       [0, -1], // يسار
     ],
-    // الصف الفردي
+    // الصف الفردي (1, 3, 5)
     [
       [-1, 0], // أعلى يسار
       [-1, 1], // أعلى يمين
@@ -820,114 +820,112 @@ class _HomeScreenState extends State<HomeScreen> {
       default:
         List<Widget> children = [];
 
-        if (isGameMode) {
+        if (isGameMode && showHexKeyboard) {
           children.add(
-            Column(
-              mainAxisSize: MainAxisSize.max,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () =>
-                            setState(() => showHexKeyboard = !showHexKeyboard),
-                        icon: Icon(
-                            showHexKeyboard ? Icons.keyboard : Icons.grid_view,
-                            color: const Color(0xFF1E90FF),
-                            size: 16),
-                        label: Text(
-                            showHexKeyboard ? 'لوحة كتابة' : 'لوحة اللعبة',
-                            style: const TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.bold),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[50],
-                          minimumSize: const Size(0, 32),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () =>
+                        setState(() => showHexKeyboard = !showHexKeyboard),
+                    icon: Icon(
+                        showHexKeyboard ? Icons.keyboard : Icons.grid_view,
+                        color: const Color(0xFF1E90FF),
+                        size: 16),
+                    label: Text(showHexKeyboard ? 'لوحة كتابة' : 'لوحة اللعبة',
+                        style: const TextStyle(
+                            fontSize: 11, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[50],
+                      minimumSize: const Size(0, 32),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: _captureKeyboardScreenshot,
-                        icon: const Icon(Icons.camera_alt,
-                            color: Colors.orange, size: 16),
-                        label: const Text('لقطة شاشة',
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.bold),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange[50],
-                          foregroundColor: Colors.orange[900],
-                          minimumSize: const Size(0, 32),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: _showSettingsDialog,
-                        icon: const Icon(Icons.settings,
-                            color: Color(0xFF1E90FF), size: 16),
-                        label: const Text('إعدادات',
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.bold),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[50],
-                          foregroundColor: Colors.green[700],
-                          minimumSize: const Size(0, 32),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () =>
-                            setState(() => _keyboardPanel = 'questions'),
-                        icon: const Icon(Icons.question_answer,
-                            color: Color(0xFF1E90FF), size: 16),
-                        label: const Text('الأسئلة',
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.bold),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple[50],
-                          foregroundColor: Colors.purple[700],
-                          minimumSize: const Size(0, 32),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                showHexKeyboard ? _buildHexKeyboard() : _buildKeyboard(),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _captureKeyboardScreenshot,
+                    icon: const Icon(Icons.camera_alt,
+                        color: Colors.orange, size: 16),
+                    label: const Text('لقطة شاشة',
+                        style: TextStyle(
+                            fontSize: 11, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange[50],
+                      foregroundColor: Colors.orange[900],
+                      minimumSize: const Size(0, 32),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _showSettingsDialog,
+                    icon: const Icon(Icons.settings,
+                        color: Color(0xFF1E90FF), size: 16),
+                    label: const Text('إعدادات',
+                        style: TextStyle(
+                            fontSize: 11, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[50],
+                      foregroundColor: Colors.green[700],
+                      minimumSize: const Size(0, 32),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () =>
+                        setState(() => _keyboardPanel = 'questions'),
+                    icon: const Icon(Icons.question_answer,
+                        color: Color(0xFF1E90FF), size: 16),
+                    label: const Text('الأسئلة',
+                        style: TextStyle(
+                            fontSize: 11, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple[50],
+                      foregroundColor: Colors.purple[700],
+                      minimumSize: const Size(0, 32),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
+          );
+        }
+        if (isGameMode) {
+          children.add(
+            showHexKeyboard ? _buildHexKeyboard() : _buildKeyboard(),
           );
         } else {
           children.add(_buildKeyboard());
@@ -1812,7 +1810,11 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text('تحدي الحروف',
               style: TextStyle(fontWeight: FontWeight.bold)),
           onTap: () {
-            setState(() => _keyboardPanel = 'main');
+            setState(() {
+              isGameMode = true;
+              showHexKeyboard = true;
+              _keyboardPanel = 'main';
+            });
             _startGameMode();
           },
         ),
@@ -2120,12 +2122,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHexKeyboard() {
     double maxWidth = MediaQuery.of(context).size.width;
     final List<List<String?>> baseHexRows = [
-      [null, null, null, null, null, null, null, null],
-      [null, 'ب', 'ج', 'م', 'س', 'ق', '٨', null],
-      [null, 'و', '٤', 'ت', '٧', 'ح', '٢', null],
-      [null, 'ص', '١', 'ش', '٥', 'ف', 'د', null],
-      [null, '٠', 'ع', 'ل', '٣', 'ي', '٦', null],
-      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, 'ج', 'م', 'س', 'ق', '٨', null],
+      [null, '٤', 'ت', '٧', 'ح', '٢', null],
+      [null, '١', 'ش', '٥', 'ف', 'د', null],
+      [null, '٠', 'ع', 'ل', '٣', '٦', null],
+      [null, 'ب', 'و', 'ص', 'ي', '٨', null],
+      [null, null, null, null, null, null, null],
     ];
     // اعرض الأرقام الأصلية، وإذا كان هناك استبدال مؤقت لهذا الزر، اعرض الحرف المستبدل
     final List<List<String?>> hexRows = List.generate(
@@ -2853,27 +2856,27 @@ class _HomeScreenState extends State<HomeScreen> {
   // دالة مساعدة لمعرفة ما إذا كانت الخلية على الحافة
   bool isEdgeCell(int row, int col, String teamColor) {
     if (teamColor == 'red') {
-      // الأحمر: الحواف اليسرى (col=1) واليمنى (col=6)
-      return col == 1 || col == 6;
+      // الأحمر: الحواف اليسرى (col=1) واليمنى (col=4)
+      return col == 1 || col == 4;
     } else if (teamColor == 'green') {
-      // الأخضر: الحواف العلوية (row=1) والسفلية (row=4)
-      return row == 1 || row == 4;
+      // الأخضر: الحواف العلوية (row=1) والسفلية (row=5)
+      return row == 1 || row == 5;
     }
     return false;
   }
 
   // 2. دالة اكتشاف المسار المتصل (BFS)
   bool checkTeamWinPath(String teamColor) {
-    // الشبكة السداسية الفعلية: 6 صفوف (0-5) و 8 أعمدة (0-7)
-    // الخلايا الفعلية: من الصف 1-4 والعمود 1-6
-    final rows = 6;
-    final cols = 8;
+    // الشبكة السداسية: 7 صفوف (0-6) و 6 أعمدة (0-5)
+    // الخلايا الفعلية: من الصف 1-5 والعمود 1-4
+    final rows = 7;
+    final cols = 6;
     Set<String> visited = {};
     List<List<int>> queue = [];
 
     if (teamColor == 'red') {
-      // الأحمر: من أي خلية في العمود 1 إلى أي خلية في العمود 6
-      for (int row = 1; row <= 4; row++) {
+      // الأحمر: من أي خلية في العمود 1 إلى أي خلية في العمود 4
+      for (int row = 1; row <= 5; row++) {
         String key = '$row-1';
         if (_keyTeamColors[key] == 'red') {
           queue.add([row, 1]);
@@ -2881,8 +2884,8 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } else if (teamColor == 'green') {
-      // الأخضر: من أي خلية في الصف 1 إلى أي خلية في الصف 4
-      for (int col = 1; col <= 6; col++) {
+      // الأخضر: من أي خلية في الصف 1 إلى أي خلية في الصف 5
+      for (int col = 1; col <= 4; col++) {
         String key = '1-$col';
         if (_keyTeamColors[key] == 'green') {
           queue.add([1, col]);
@@ -2897,10 +2900,10 @@ class _HomeScreenState extends State<HomeScreen> {
       int col = pos[1];
       String key = '$row-$col';
       // شرط الفوز: الوصول لأي خلية على الحافة المقابلة
-      if (teamColor == 'red' && col == 6 && _keyTeamColors[key] == 'red') {
+      if (teamColor == 'red' && col == 4 && _keyTeamColors[key] == 'red') {
         return true;
       }
-      if (teamColor == 'green' && row == 4 && _keyTeamColors[key] == 'green') {
+      if (teamColor == 'green' && row == 5 && _keyTeamColors[key] == 'green') {
         return true;
       }
       int parity = row % 2;
@@ -2908,7 +2911,7 @@ class _HomeScreenState extends State<HomeScreen> {
         int newRow = row + dir[0];
         int newCol = col + dir[1];
         String nKey = '$newRow-$newCol';
-        if (newRow >= 1 && newRow <= 4 && newCol >= 1 && newCol <= 6) {
+        if (newRow >= 1 && newRow <= 5 && newCol >= 1 && newCol <= 4) {
           if (!visited.contains(nKey) && _keyTeamColors[nKey] == teamColor) {
             queue.add([newRow, newCol]);
             visited.add(nKey);
