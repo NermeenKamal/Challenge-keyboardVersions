@@ -6,12 +6,7 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		A2ADD3A1E441C156A4787F55 /* HarfChallengeKeyboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C973B99105FF15C240AEE1 /* HarfChallengeKeyboardApp.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		B9C973B99105FF15C240AEE1 /* HarfChallengeKeyboardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarfChallengeKeyboardApp.swift; sourceTree = "<group>"; };
 		EC7C93B058B5BB064B2321F1 /* HarfChallengeKeyboardApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HarfChallengeKeyboardApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -35,7 +30,6 @@
 		FC68CF2B339DAD3E7D940099 /* HarfChallengeKeyboardApp */ = {
 			isa = PBXGroup;
 			children = (
-				B9C973B99105FF15C240AEE1 /* HarfChallengeKeyboardApp.swift */,
 			);
 			path = HarfChallengeKeyboardApp;
 			sourceTree = "<group>";
@@ -95,7 +89,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2ADD3A1E441C156A4787F55 /* HarfChallengeKeyboardApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
