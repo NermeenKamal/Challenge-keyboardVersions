@@ -1,0 +1,20 @@
+*.swift text diff=swift
+*.h text diff=objc
+*.m text diff=objc
+*.strings text diff=strings
+*.plist text
+*.json text
+*.yml text
+*.md text
+*.sh text
+*.txt text
+
+*.png binary
+*.jpg binary
+*.gif binary
+*.ttf binary
+*.xcassets binary
+*.xcworkspace binary
+*.xcscheme binary
+*.storyboard binary
+*.xib binary 
